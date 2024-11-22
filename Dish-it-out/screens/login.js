@@ -12,7 +12,7 @@ const Login = () => {
         <View style={styles.up}>
           {/* Logo Image */}
           <Image 
-            source={require('../assets/logo2.jpeg')} 
+            source={require('../assets/logo3.jpg')} 
             style={styles.image} 
           />
 

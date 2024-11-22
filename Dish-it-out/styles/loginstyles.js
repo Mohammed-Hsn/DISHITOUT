@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     marginTop: 20,            // Space above the login/signup buttons
   },
   text: {
+    width: 115,
     fontFamily: 'ArchivoBlack',
     fontSize: 20,
     fontWeight: 'bold',
