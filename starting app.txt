@@ -1,0 +1,7 @@
+steps
+1.npx create-expo-app@latest --template blank
+  \
+   \
+    > <your_project_name>
+2.cd <your_project_name>
+3.npx expo start --tunnel
