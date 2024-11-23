@@ -26,7 +26,17 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 4,
   },
-  imageContainer: {
+  imageContainerSearchIcon : {
+    backgroundColor: 'black',
+    shadowOffset: { width: 4, height: 4 },  // Adjusted shadow for image container
+    shadowOpacity: 1,  // Lowered opacity for a subtler shadow
+    shadowRadius: 1,  // Softens the shadow around the image container
+    borderColor: '#000',
+    borderWidth: 2,
+    borderRadius: 4,
+    marginLeft: 20,
+  },
+  imageContainerPlusIcon : {
     backgroundColor: 'black',
     shadowOffset: { width: 4, height: 4 },  // Adjusted shadow for image container
     shadowOpacity: 1,  // Lowered opacity for a subtler shadow
@@ -41,6 +51,12 @@ const styles = StyleSheet.create({
     width: 40,
     backgroundColor: "orange",  // Placeholder background for the image
   },
+  image2: {
+    height: 35.5,
+    width: 40,
+    backgroundColor: "#FF6F61",  // Placeholder background for the image
+  },
+
   sidebar: {
     backgroundColor: '#12e193',
     width: 350,
@@ -60,7 +76,6 @@ const styles = StyleSheet.create({
   text: {
     color: 'white',
   },
-  
 });
 
 export default styles;
