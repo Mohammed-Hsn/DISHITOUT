@@ -65,7 +65,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly', // Space buttons evenly
     alignItems: 'center', // Center buttons horizontally
     marginHorizontal: 7,
-    marginTop: 650,
+    marginBottom: 550,
+    marginTop: 100,
     shadowOffset: { width: 4, height: 4 },  // Adjusted shadow for better control
     shadowOpacity: 1,  // Lowered shadow opacity for a softer shadow
     shadowRadius: 1,  // Added a small radius to soften the shadow edges
