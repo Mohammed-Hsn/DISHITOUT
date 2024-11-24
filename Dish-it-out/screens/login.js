@@ -140,7 +140,7 @@ const Login = () => {
       </TouchableWithoutFeedback>
 
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         visible={signupModalVisible}
         onRequestClose={() => {

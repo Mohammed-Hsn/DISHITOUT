@@ -1,16 +1,23 @@
-just give me the list you gave for colors a moment ago
-Of course! Here are the complementary colors that match well with #f8ebda in a Neo-Brutalism style:
+the complementary colors that match well with #f8ebda in a Neo-Brutalism style:
 
-Deep Charcoal  #2E2E2E   : Provides a stark contrast while keeping a sophisticated look.
-
-Bright Teal #00B4D8    : Adds a vibrant, eye-catching pop of color.
-
-Bold Red #D62828         : Creates a dynamic and energetic feel.
-
-Dark Forest Green #1B4332          : Offers a strong, earthy tone.
-
-Electric Blue #0077B6       : Adds a modern, striking look.
-
-Warm Mustard #FFC300      : Enhances warmth and complements the soft tone of #f8ebda.
-
-Vivid Coral #FF6F61       : Brings a playful, lively touch.
+Deep Charcoal #2E2E2E: Stark contrast with a sophisticated tone.
+Bright Teal #00B4D8: Vibrant and eye-catching.
+Bold Red #D62828: Energetic and dynamic.
+Dark Forest Green #1B4332: Strong and earthy.
+Electric Blue #0077B6: Modern and striking.
+Warm Mustard #FFC300: Adds warmth and richness.
+Vivid Coral #FF6F61: Playful and lively.
+Aqua Green #00FFAB: Refreshing and lively.
+Magenta Pink #FF00FF: Bold and modern.
+Sunny Orange #FF9F1C: Warm and vibrant.
+Regal Purple #7209B7: Deep and luxurious.
+Turquoise Blue #30D5C8: Sleek and modern.
+Sunset Peach #FFA07A: Soft and warm.
+Emerald Green #50C878: Lush and balanced.
+Canary Yellow #FFD300: Bright and cheerful.
+Electric Lime #C7EA46: Playful and futuristic.
+Cerulean Blue #2A9D8F: Tranquil and striking.
+Cranberry Red #B80C09: Deep and dramatic.
+Pale Lavender #D6C8FF: Subtle and airy.
+Crimson Rose #D72638: Vibrant and romantic.
+Ivory Cream #FDFCDC: Neutral and soft.
