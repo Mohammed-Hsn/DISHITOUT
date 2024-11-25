@@ -9,6 +9,9 @@ const Home = () => {
     profile: false,
   });
 
+  const [items, setItems] = useState([]); // State to hold list of items
+  const [currentItem, setCurrentItem] = useState(''); // State to hold the current input value
+
   // Function to toggle specific modal visibility
   const toggleModal = (key) => {
     setModalVisible((prevState) => ({
@@ -17,17 +20,36 @@ const Home = () => {
     }));
   };
 
+  // Function to handle adding items
+  const handleAddItem = () => {
+    if (currentItem.trim() !== '') {
+      setItems((prevItems) => [...prevItems, currentItem.trim()]);
+      setCurrentItem(''); // Clear the input field
+    }
+  };
+
+  // Function to handle removing an item
+  const handleRemoveItem = (index) => {
+    setItems((prevItems) => prevItems.filter((_, i) => i !== index));
+  };
+
   return (
     <View style={styles.container}>
       {/* Search Area */}
       <View style={styles.search}>
         {/* Text Input */}
-        <TextInput style={styles.input} placeholder="Search..." placeholderTextColor="#000" />
-        
+        <TextInput
+          style={styles.input}
+          placeholder="Enter item..."
+          placeholderTextColor="#000"
+          value={currentItem}
+          onChangeText={(text) => setCurrentItem(text)} // Update current input value
+        />
+
         {/* Plus Icon Button */}
         <TouchableOpacity
           style={styles.imageContainerPlusIcon}
-          onPress={() => console.log('Plus icon pressed')}>
+          onPress={handleAddItem}>
           <Image source={require('../assets/plus.png')} style={styles.image2} />
         </TouchableOpacity>
 
@@ -67,10 +89,27 @@ const Home = () => {
             onPress={() => toggleModal('items')}>
             <Image source={require('../assets/cross.png')} style={styles.closeIcon} />
           </TouchableOpacity>
-          <View style={styles.modalText}></View>
+          {/* Display List of Items */}
+          <View style={styles.modalText}>
+            {items.length > 0 ? (
+              items.map((item, index) => (
+                <View key={index} style={styles.itemRow}>
+                  <Text style={styles.itemText}>{item}</Text>
+                  <TouchableOpacity
+                    style={styles.removeButton}
+                    onPress={() => handleRemoveItem(index)}>
+                    <Text style={styles.removeButtonText}>Remove</Text>
+                  </TouchableOpacity>
+                </View>
+              ))
+            ) : (
+              <Text style={styles.noItemsText}>No items added yet.</Text>
+            )}
+          </View>
         </View>
       </Modal>
 
+      {/* Favorites Modal */}
       <Modal
         visible={isModalVisible.favorites}
         transparent={true}
@@ -86,6 +125,7 @@ const Home = () => {
         </View>
       </Modal>
 
+      {/* Profile Modal */}
       <Modal
         visible={isModalVisible.profile}
         transparent={true}

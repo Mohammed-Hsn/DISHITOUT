@@ -133,6 +133,55 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: 16,
   },
+  itemText: {
+    fontSize: 16,
+    color: '#000',
+    marginVertical: 5,
+    shadowOffset: { width: 4, height: 4 },  // Adjusted shadow for better control
+    shadowOpacity: 1,  // Lowered shadow opacity for a softer shadow
+    shadowRadius: 1,  // Added a small radius to soften the shadow edges
+    borderColor: '#000',
+    borderWidth: 2,
+    borderRadius: 4,
+    backgroundColor: '#FDFCDC',
+    width: 200,
+    marginLeft: 10,
+    marginTop: 10,
+    height: 30,
+    textAlign: 'center',
+    padding: 4,
+  },
+  noItemsText: {
+    fontSize: 16,
+    color: 'gray',
+    textAlign: 'center',
+  },
+  itemRow: {
+    flexDirection: 'row', // Align text and button in a row
+    justifyContent: 'space-between', // Space out text and button
+    alignItems: 'center', // Align items vertically
+    marginVertical: 5, // Spacing between rows
+    paddingHorizontal: 10, // Add padding to the sides
+  },
+  
+  removeButton: {
+    backgroundColor: '#FF6F61', // Button color
+    paddingVertical: 5, // Vertical padding
+    paddingHorizontal: 10, // Horizontal padding
+    borderRadius: 4, // Rounded corners
+    shadowOffset: { width: 2, height: 2 }, // Button shadow
+    shadowOpacity: 0.8, // Shadow transparency
+    shadowRadius: 2, // Spread of the shadow edges
+    borderColor: '#000', // Border color
+    borderWidth: 1, // Border thickness
+  },
+  
+  removeButtonText: {
+    color: '#fff', // Text color
+    fontSize: 14, // Font size
+    fontWeight: 'bold', // Make text bold
+    textAlign: 'center', // Center-align text
+  },  
 });
 
 export default styles ;
