@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, // Full screen height
+    flex: 1,
     backgroundColor: '#f9ebd6',
     alignItems: 'center',
   },
@@ -10,40 +10,40 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 20,
     justifyContent: 'space-between',
-    alignItems: 'center', // This will align the input and image container vertically
+    alignItems: 'center',
     marginTop: 70,
   },
   input: {
-    color: 'black',  // Set text color to black for visibility against yellow background
-    fontFamily: 'ArchivoBlack',  // Apply font family to the text
-    fontSize: 18,  // Adjust font size
+    color: 'black',
+    fontFamily: 'ArchivoBlack',
+    fontSize: 18,
     width: 200,
     height: 40,
     backgroundColor: '#f7d302',
-    shadowOffset: { width: 4, height: 4 },  // Adjusted shadow for better control
-    shadowOpacity: 1,  // Lowered shadow opacity for a softer shadow
-    shadowRadius: 1,  // Added a small radius to soften the shadow edges
+    shadowOffset: { width: 4, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 1,
     borderColor: '#000',
     borderWidth: 2,
     borderRadius: 4,
     paddingLeft: 10,
     paddingRight: 10,
   },
-  imageContainerSearchIcon : {
+  imageContainerSearchIcon: {
     backgroundColor: 'black',
-    shadowOffset: { width: 4, height: 4 },  // Adjusted shadow for image container
-    shadowOpacity: 1,  // Lowered opacity for a subtler shadow
-    shadowRadius: 1,  // Softens the shadow around the image container
+    shadowOffset: { width: 4, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 1,
     borderColor: '#000',
     borderWidth: 2,
     borderRadius: 4,
     marginLeft: 20,
   },
-  imageContainerPlusIcon : {
+  imageContainerPlusIcon: {
     backgroundColor: 'black',
-    shadowOffset: { width: 4, height: 4 },  // Adjusted shadow for image container
-    shadowOpacity: 1,  // Lowered opacity for a subtler shadow
-    shadowRadius: 1,  // Softens the shadow around the image container
+    shadowOffset: { width: 4, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 1,
     borderColor: '#000',
     borderWidth: 2,
     borderRadius: 4,
@@ -52,26 +52,25 @@ const styles = StyleSheet.create({
   image: {
     height: 35.5,
     width: 40,
-    backgroundColor: "orange",  // Placeholder background for the image
+    backgroundColor: "orange",
   },
   image2: {
     height: 35.5,
     width: 40,
-    backgroundColor: "#FF6F61",  // Placeholder background for the image
+    backgroundColor: "#FF6F61",
   },
-
   sidebar: {
     backgroundColor: '#12e193',
     width: 350,
-    height: 50, // Adjust height for spacing
-    flexDirection: 'row', // Arrange buttons vertically
-    justifyContent: 'space-evenly', // Space buttons evenly
-    alignItems: 'center', // Center buttons horizontally
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
     marginHorizontal: 7,
     marginTop: 30,
-    shadowOffset: { width: 4, height: 4 },  // Adjusted shadow for better control
-    shadowOpacity: 1,  // Lowered shadow opacity for a softer shadow
-    shadowRadius: 1,  // Added a small radius to soften the shadow edges
+    shadowOffset: { width: 4, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 1,
     borderColor: '#000',
     borderWidth: 2,
     borderRadius: 4,
@@ -79,19 +78,18 @@ const styles = StyleSheet.create({
   text: {
     color: 'Black',
   },
-  foodarea : {
-    width: 350, // Box width
-    height: 600, // Box height
-    backgroundColor: '#30D5C8', // Box background color
-    borderColor: '#000', // Border color
-    borderWidth: 2, // Border width
-    borderRadius: 4, // Border corner radius
-    shadowOffset: { width: 4, height: 4 }, // Offset shadow horizontally and vertically
-    shadowOpacity: 1, // Shadow transparency (0 to 1)
-    shadowRadius: 1, // Spread of the shadow edges
-    shadowColor: 'black', // Shadow color
-    // Android specific shadow (elevation)
-    elevation: 5, // Controls shadow on Android
+  foodarea: {
+    width: 350,
+    height: 600,
+    backgroundColor: '#30D5C8',
+    borderColor: '#000',
+    borderWidth: 2,
+    borderRadius: 4,
+    shadowOffset: { width: 4, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 1,
+    shadowColor: 'black',
+    elevation: 5,
     marginTop: 30,
   },
   modalContainer: {
@@ -102,44 +100,42 @@ const styles = StyleSheet.create({
   },
   modalText: {
     width: 320,
-    height: 510,
+    height: 520, // Fixed height for the modal
     backgroundColor: '#C7EA46',
-    shadowOffset: { width: 4, height: 4 },  // Adjusted shadow for better control
-    shadowOpacity: 1,  // Lowered shadow opacity for a softer shadow
-    shadowRadius: 1,  // Added a small radius to soften the shadow edges
+    shadowOffset: { width: 4, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 1,
     borderColor: '#000',
     borderWidth: 2,
     borderRadius: 4,
-    marginBottom: 30,
+    marginBottom: 180,
+    paddingBottom: 20,  // Padding for the bottom space
   },
   closeButton: {
     width: 40,
     height: 40,
     backgroundColor: '#fff',
-    shadowOffset: { width: 4, height: 4 },  // Adjusted shadow for better control
-    shadowOpacity: 1,  // Lowered shadow opacity for a softer shadow
-    shadowRadius: 1,  // Added a small radius to soften the shadow edges
+    shadowOffset: { width: 4, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 1,
     borderColor: '#000',
     borderWidth: 2,
     borderRadius: 4,
     marginRight: 280,
     marginBottom: 10,
+    marginTop: 150,
   },
   closeIcon: {
     width: '100%',
     height: '100%',
   },
-  closeText: {
-    color: '#000',
-    fontSize: 16,
-  },
   itemText: {
     fontSize: 16,
     color: '#000',
     marginVertical: 5,
-    shadowOffset: { width: 4, height: 4 },  // Adjusted shadow for better control
-    shadowOpacity: 1,  // Lowered shadow opacity for a softer shadow
-    shadowRadius: 1,  // Added a small radius to soften the shadow edges
+    shadowOffset: { width: 4, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 1,
     borderColor: '#000',
     borderWidth: 2,
     borderRadius: 4,
@@ -157,31 +153,65 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   itemRow: {
-    flexDirection: 'row', // Align text and button in a row
-    justifyContent: 'space-between', // Space out text and button
-    alignItems: 'center', // Align items vertically
-    marginVertical: 5, // Spacing between rows
-    paddingHorizontal: 10, // Add padding to the sides
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 5,
+    paddingHorizontal: 10,
   },
-  
   removeButton: {
-    backgroundColor: '#FF6F61', // Button color
-    paddingVertical: 5, // Vertical padding
-    paddingHorizontal: 10, // Horizontal padding
-    borderRadius: 4, // Rounded corners
-    shadowOffset: { width: 2, height: 2 }, // Button shadow
-    shadowOpacity: 0.8, // Shadow transparency
-    shadowRadius: 2, // Spread of the shadow edges
-    borderColor: '#000', // Border color
-    borderWidth: 1, // Border thickness
+    backgroundColor: '#7209B7',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 4,
+    shadowOffset: { width: 4, height: 4},
+    shadowOpacity: 1,
+    shadowRadius: 1,
+    borderColor: '#000',
+    borderWidth: 1,
+    marginTop: 6,
+    height: 30,
   },
-  
   removeButtonText: {
-    color: '#fff', // Text color
-    fontSize: 14, // Font size
-    fontWeight: 'bold', // Make text bold
-    textAlign: 'center', // Center-align text
-  },  
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  // Add ScrollView for the modal content to allow scrolling if necessary
+  scrollViewContainer: {
+    flex: 1,
+    padding:10, // Add padding for some space around items
+  },
+  recipeItem: {
+    marginTop: 20,
+    marginBottom: 20, // Space between items
+    width: 300,
+    marginLeft: 24,
+  },
+
+  recipeCard: {
+    padding: 10,             
+    shadowColor: '#000',     
+    shadowOffset: { width: 4, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 1,
+    elevation: 5, 
+    backgroundColor: '#D72638',
+  },
+
+  recipeImage: {
+    width: '100%',          // Full width image
+    height: 200,            // Fixed height for the image
+  },
+
+  recipeTitle: {
+    marginTop: 10,          // Space between image and title
+    fontSize: 16,           // Title font size
+    fontWeight: 'bold',     // Bold title
+    textAlign: 'center',    // Centered title
+    color: '#333',          // Title color
+  },
 });
 
-export default styles ;
+export default styles;
