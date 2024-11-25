@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
   // Add ScrollView for the modal content to allow scrolling if necessary
   scrollViewContainer: {
     flex: 1,
-    padding:10, // Add padding for some space around items
+    padding: 10, // Add padding for some space around items
   },
   recipeItem: {
     marginTop: 20,
