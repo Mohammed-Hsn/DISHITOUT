@@ -110,23 +110,28 @@ const Home = () => {
               </View>
             ))
           ) : (
-            <Text>No recipes found. Add more ingredients!</Text>
+            <Text style={styles.jk}>No recipes found. Add more ingredients!</Text>
           )}
         </ScrollView>
       </View>
 
       {/* Sidebar */}
       <View style={styles.sidebar}>
-        <TouchableOpacity onPress={() => toggleModal('items')}>
+      <TouchableOpacity onPress={() => toggleModal('items')}>
+        <View style={styles.itemButtonContainer}>
+        <View style={styles.counterContainer}>
+            <Text style={styles.counterText}>{items.length}</Text>
+          </View>
           <Text style={styles.text}>ITEMS</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => toggleModal('favorites')}>
-          <Text style={styles.text}>FAVORITES</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => toggleModal('profile')}>
-          <Text style={styles.text}>PROFILE</Text>
-        </TouchableOpacity>
-      </View>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => toggleModal('favorites')}>
+        <Text style={styles.text}>FAVORITES</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => toggleModal('profile')}>
+        <Text style={styles.text}>PROFILE</Text>
+      </TouchableOpacity>
+    </View>
 
       {/* Modals */}
       {/* Items Modal */}
