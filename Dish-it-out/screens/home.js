@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, Image, TextInput, TouchableOpacity, Modal, ScrollView, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native'; // Import navigation hook
+import { createClient } from '@supabase/supabase-js'; // Importing createClient for Supabase
+
 import styles from '../styles/homestyles'; // Ensure the import path is correct
 
 const API_KEY = 'b0ee7bf0482145e6bed907a043a3a487'; // Your API Key
+
+// Directly initializing Supabase client with your URL and API Key
+const supabase = createClient(
+  'https://swvrzgrpqspparlibyug.supabase.co', // Your Supabase URL
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3dnJ6Z3JwcXNwcGFybGlieXVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA0MzMyOTEsImV4cCI6MjA0NjAwOTI5MX0.CwYqmcQ5f2JT5A8THcsLwoTHA0S0w4joeeFApyscqOg' // Your Supabase Anon Key
+);
 
 const Home = () => {
   const [isModalVisible, setModalVisible] = useState({
     items: false,
     favorites: false,
-    instructions: false, // Add state for instruction modal
+    instructions: false, 
   });
 
   const [items, setItems] = useState([]); // List of ingredients
@@ -61,7 +69,7 @@ const Home = () => {
       console.log('Searching for recipes with ingredients:', ingredientQuery); // Log the ingredients
 
       const response = await axios.get(
-        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredientQuery}&number=5&apiKey=${API_KEY}`
+        `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredientQuery}&number=50&apiKey=${API_KEY}`
       );
 
       console.log('API Response:', response.data);
@@ -107,6 +115,17 @@ const Home = () => {
     }
   
     return formattedInstructions.split('\n'); // Split by newline to render each item as a Text component
+  };
+
+  const navigation = useNavigation();
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut(); // Log out the user
+      navigation.navigate('Login'); // Navigate to Login screen
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
   };
 
   return (
@@ -167,8 +186,8 @@ const Home = () => {
             <Text style={styles.text}>ITEMS</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => toggleModal('favorites')}>
-          <Text style={styles.text}>FAVORITES</Text>
+        <TouchableOpacity onPress={handleLogout}>
+            <Text style={styles.text}>LOG OUT</Text>
         </TouchableOpacity>
       </View>
 
