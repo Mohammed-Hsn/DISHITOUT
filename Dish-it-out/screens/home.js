@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, Image, TextInput, TouchableOpacity, Modal, ScrollView, Alert } from 'react-native';
+import { Text, View, Image, TextInput, TouchableOpacity, Modal, ScrollView, Alert , map} from 'react-native';
 import axios from 'axios';
 import styles from '../styles/homestyles'; // Ensure the import path is correct
 
@@ -10,11 +10,13 @@ const Home = () => {
     items: false,
     favorites: false,
     profile: false,
+    instructions: false, // Add state for instruction modal
   });
 
   const [items, setItems] = useState([]); // List of ingredients
   const [currentItem, setCurrentItem] = useState(''); // Current input in search bar
   const [recipes, setRecipes] = useState([]); // Recipes fetched from API
+  const [selectedRecipe, setSelectedRecipe] = useState(null); // Store the selected recipe
 
   // Function to toggle the visibility of modals
   const toggleModal = (key) => {
@@ -65,13 +67,45 @@ const Home = () => {
       console.log('API Response:', response.data);
 
       if (response.data.length > 0) {
-        setRecipes(response.data); // Set the fetched recipes
+        const recipeDetailsPromises = response.data.map(async (recipe) => {
+          const recipeResponse = await axios.get(
+            `https://api.spoonacular.com/recipes/${recipe.id}/information?apiKey=${API_KEY}`
+          );
+          return {
+            ...recipe,
+            instructions: recipeResponse.data.instructions,
+            image: recipeResponse.data.image, // Add image here for use in modal
+          };
+        });
+
+        const recipeDetails = await Promise.all(recipeDetailsPromises);
+        setRecipes(recipeDetails); // Set the fetched recipes with instructions
       } else {
         console.log('No recipes found for the given ingredients.');
       }
     } catch (error) {
       console.error('Error fetching recipes:', error);
     }
+  };
+  const formatInstructions = (instructions) => {
+    // If the instructions contain <ol> and <li>, split them into a list
+    const listRegex = /<ol[^>]*>(.*?)<\/ol>/g;
+    const listItemsRegex = /<li[^>]*>(.*?)<\/li>/g;
+  
+    let formattedInstructions = instructions;
+  
+    // If instructions contain <ol>, <li>, replace them with plain text
+    if (listRegex.test(instructions)) {
+      formattedInstructions = instructions.replace(listRegex, (match) => {
+        const listItems = match.match(listItemsRegex);
+        if (listItems) {
+          return listItems.map((item) => item.replace(/<\/?li>/g, '').trim()).join('\n');
+        }
+        return '';
+      });
+    }
+  
+    return formattedInstructions.split('\n'); // Split by newline to render each item as a Text component
   };
 
   return (
@@ -102,10 +136,17 @@ const Home = () => {
           {recipes.length > 0 ? (
             recipes.map((recipe, index) => (
               <View key={index} style={styles.recipeItem}>
-                {/* Wrapper for the image and title with a white background */}
+                {/* Wrapper for the title and instructions button */}
                 <View style={styles.recipeCard}>
-                  <Image source={{ uri: recipe.image }} style={styles.recipeImage} />
                   <Text style={styles.recipeTitle}>{recipe.title}</Text>
+                  <TouchableOpacity
+                    style={styles.instructionButton}
+                    onPress={() => {
+                      setSelectedRecipe(recipe); // Set selected recipe
+                      toggleModal('instructions'); // Open the instruction modal
+                    }}>
+                    <Text style={styles.instructionsText}>View Instructions</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             ))
@@ -117,58 +158,56 @@ const Home = () => {
 
       {/* Sidebar */}
       <View style={styles.sidebar}>
-      <TouchableOpacity onPress={() => toggleModal('items')}>
-        <View style={styles.itemButtonContainer}>
-        <View style={styles.counterContainer}>
-            <Text style={styles.counterText}>{items.length}</Text>
+        <TouchableOpacity onPress={() => toggleModal('items')}>
+          <View style={styles.itemButtonContainer}>
+            <View style={styles.counterContainer}>
+              <Text style={styles.counterText}>{items.length}</Text>
+            </View>
+            <Text style={styles.text}>ITEMS</Text>
           </View>
-          <Text style={styles.text}>ITEMS</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => toggleModal('favorites')}>
-        <Text style={styles.text}>FAVORITES</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => toggleModal('profile')}>
-        <Text style={styles.text}>PROFILE</Text>
-      </TouchableOpacity>
-    </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => toggleModal('favorites')}>
+          <Text style={styles.text}>FAVORITES</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => toggleModal('profile')}>
+          <Text style={styles.text}>PROFILE</Text>
+        </TouchableOpacity>
+      </View>
 
       {/* Modals */}
-      {/* Items Modal */}
+      {/* Instruction Modal */}
       <Modal
-        visible={isModalVisible.items}
-        transparent={true}
-        animationType="fade"
-        onRequestClose={() => toggleModal('items')}>
-        <View style={styles.modalContainer}>
-          <TouchableOpacity
-            style={styles.closeButton}
-            onPress={() => toggleModal('items')}>
-            <Image source={require('../assets/cross.png')} style={styles.closeIcon} />
-          </TouchableOpacity>
+  visible={isModalVisible.instructions}
+  transparent={true}
+  animationType="fade"
+  onRequestClose={() => toggleModal('instructions')}>
+  <View style={styles.modalContainer}>
+    <TouchableOpacity
+      style={styles.closeButton}
+      onPress={() => toggleModal('instructions')}>
+      <Image source={require('../assets/cross.png')} style={styles.closeIcon} />
+    </TouchableOpacity>
 
-          {/* Scrollable List of Items */}
-          <View style={styles.modalText}>
-            <ScrollView style={styles.scrollViewContainer}>
-              {items.length > 0 ? (
-                items.map((item, index) => (
-                  <View key={index} style={styles.itemRow}>
-                    <Text style={styles.itemText}>{item}</Text>
-                    <TouchableOpacity
-                      style={styles.removeButton}
-                      onPress={() => handleRemoveItem(index)}>
-                      <Text style={styles.removeButtonText}>Remove</Text>
-                    </TouchableOpacity>
-                  </View>
-                ))
-              ) : (
-                <Text style={styles.noItemsText}>No items added yet.</Text>
-              )}
-            </ScrollView>
-          </View>
-        </View>
-      </Modal>
+    {/* Display recipe image and formatted instructions */}
+    {selectedRecipe && (
+      <View style={[styles.modalText, styles.centeredContent]}>
+        <Image
+          source={{ uri: selectedRecipe.image }}
+          style={styles.modalImage}
+        />
 
+        {/* Scrollable instructions */}
+        <ScrollView style={styles.scrollViewInstructions}>
+          {formatInstructions(selectedRecipe.instructions).map((instruction, index) => (
+            <Text key={index} style={styles.recipeInstructions}>
+              {instruction}
+            </Text>
+          ))}
+        </ScrollView>
+      </View>
+    )}
+  </View>
+</Modal>
       {/* Favorites Modal */}
       <Modal
         visible={isModalVisible.favorites}

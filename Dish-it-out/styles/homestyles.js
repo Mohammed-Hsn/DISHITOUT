@@ -239,6 +239,29 @@ const styles = StyleSheet.create({
     color: 'black', // Optional: Set a subtle gray color
     fontSize: 16, // Optional: Adjust font size
   },
+  instructionButton: {
+    
+  },
+  instructionsText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  modalImage: {
+    width: 250,
+    height: 200,
+    marginLeft: 33,
+    marginTop: 15,
+  },
+  recipeInstructions: {
+    marginLeft: 10,
+    marginRight: 10,
+    fontSize: 15,
+  },
+  scrollViewInstructions: {
+    marginTop: 20, // Add some space above the instructions
+    maxHeight: 300, // Limit the height to make it scrollable, adjust as needed
+    paddingHorizontal: 10,
+  },  
 });
 
 export default styles;
