@@ -78,36 +78,47 @@ const Login = () => {
     }
   
     try {
-      // Try to sign up the user
+      // Try to sign up the user using Supabase Auth
       const { data, error } = await supabase.auth.signUp({
         email: signupEmail,
-        password: signupPassword,
+        password: signupPassword,  // Use the plain password for Supabase Auth
       });
   
       if (error) {
         console.log(error);  // Log the error to see the exact message returned
         if (error.message.includes('already registered')) {
-          // This should be the message if email is already taken
           Alert.alert('Signup Error', 'This email is already registered. Please use a different email.');
         } else {
-          // Handle any other error
           Alert.alert('Signup Error', error.message);
         }
       } else {
-        // Success if no error occurs
-        Alert.alert('Success', 'Account created successfully!');
-        resetSignupFields();
-        setSignupModalVisible(false);
-        navigation.navigate('Login'); // Navigate to the Login screen
+        // After successful sign-up, insert user into your custom "users" table without hashing the password
+        const { error: insertError } = await supabase
+          .from('users')
+          .insert([
+            {
+              email: signupEmail,
+              password: signupPassword,  // Store the plain password (not hashed)
+              created_at: new Date().toISOString(),
+            }
+          ]);
+  
+        if (insertError) {
+          Alert.alert('Error', 'Failed to create user profile.');
+          console.error(insertError);
+        } else {
+          Alert.alert('Success', 'Account created successfully!');
+          resetSignupFields();
+          setSignupModalVisible(false);
+          navigation.navigate('Login'); // Navigate to the Login screen
+        }
       }
     } catch (err) {
       // Handle unexpected errors
       Alert.alert('Unexpected Error', 'An unexpected error occurred. Please try again later.');
       console.error(err);  // Log any unexpected errors for debugging
     }
-  };
-  
-  
+  }; 
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

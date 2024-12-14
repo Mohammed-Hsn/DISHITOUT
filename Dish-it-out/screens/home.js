@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
-import { Text, View, Image, TextInput, TouchableOpacity, Modal, ScrollView, Alert , map} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, View, Image, TextInput, TouchableOpacity, Modal, ScrollView, Alert } from 'react-native';
 import axios from 'axios';
+import { createClient } from '@supabase/supabase-js'; // For Supabase integration
+import { useNavigation } from '@react-navigation/native'; // Import navigation hook
 import styles from '../styles/homestyles'; // Ensure the import path is correct
 
 const API_KEY = 'b406e7cf7e264868879a8fc03e4f2b5d'; // Your API Key
+
+// Supabase initialization
+const supabaseUrl = 'https://swvrzgrpqspparlibyug.supabase.co';
+const supabaseAnonKey =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3dnJ6Z3JwcXNwcGFybGlieXVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA0MzMyOTEsImV4cCI6MjA0NjAwOTI5MX0.CwYqmcQ5f2JT5A8THcsLwoTHA0S0w4joeeFApyscqOg';
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const Home = () => {
   const [isModalVisible, setModalVisible] = useState({
@@ -17,6 +26,27 @@ const Home = () => {
   const [currentItem, setCurrentItem] = useState(''); // Current input in search bar
   const [recipes, setRecipes] = useState([]); // Recipes fetched from API
   const [selectedRecipe, setSelectedRecipe] = useState(null); // Store the selected recipe
+  const [user, setUser] = useState(null); // To store user info
+
+  const navigation = useNavigation(); // Use navigation hook
+
+  // Fetch user profile data from Supabase
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const { data, error } = await supabase.from('users').select('email, password').single();
+        if (error) {
+          console.error('Error fetching user data:', error);
+        } else {
+          setUser(data); // Set the user data in state
+        }
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+    
+    fetchUserProfile(); // Fetch user profile data on component mount
+  }, []);
 
   // Function to toggle the visibility of modals
   const toggleModal = (key) => {
@@ -87,6 +117,7 @@ const Home = () => {
       console.error('Error fetching recipes:', error);
     }
   };
+
   const formatInstructions = (instructions) => {
     // If the instructions contain <ol> and <li>, split them into a list
     const listRegex = /<ol[^>]*>(.*?)<\/ol>/g;
@@ -106,6 +137,17 @@ const Home = () => {
     }
   
     return formattedInstructions.split('\n'); // Split by newline to render each item as a Text component
+  };
+
+  // Function to log out and redirect to login screen
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut(); // Sign out the user
+      setModalVisible({ ...isModalVisible, profile: false }); // Close the profile modal
+      navigation.navigate('Login'); // Navigate to the login screen
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
   };
 
   return (
@@ -175,39 +217,36 @@ const Home = () => {
       </View>
 
       {/* Modals */}
-      {/* Instruction Modal */}
+      {/* Items Modal */}
       <Modal
-  visible={isModalVisible.instructions}
-  transparent={true}
-  animationType="fade"
-  onRequestClose={() => toggleModal('instructions')}>
-  <View style={styles.modalContainer}>
-    <TouchableOpacity
-      style={styles.closeButton}
-      onPress={() => toggleModal('instructions')}>
-      <Image source={require('../assets/cross.png')} style={styles.closeIcon} />
-    </TouchableOpacity>
-
-    {/* Display recipe image and formatted instructions */}
-    {selectedRecipe && (
-      <View style={[styles.modalText, styles.centeredContent]}>
-        <Image
-          source={{ uri: selectedRecipe.image }}
-          style={styles.modalImage}
-        />
-
-        {/* Scrollable instructions */}
-        <ScrollView style={styles.scrollViewInstructions}>
-          {formatInstructions(selectedRecipe.instructions).map((instruction, index) => (
-            <Text key={index} style={styles.recipeInstructions}>
-              {instruction}
-            </Text>
-          ))}
-        </ScrollView>
-      </View>
-    )}
-  </View>
-</Modal>
+        visible={isModalVisible.items}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => toggleModal('items')}>
+        <View style={styles.modalContainer}>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => toggleModal('items')}>
+            <Image source={require('../assets/cross.png')} style={styles.closeIcon} />
+          </TouchableOpacity>
+          <View style={styles.modalText}>
+            {items.length > 0 ? (
+              <ScrollView>
+                {items.map((item, index) => (
+                  <View key={index} style={styles.itemRow}>
+                    <Text style={styles.itemText}>{item}</Text>
+                    <TouchableOpacity onPress={() => handleRemoveItem(index)}>
+                      <Text style={styles.removeButton}>Remove</Text>
+                    </TouchableOpacity>
+                  </View>
+                ))}
+              </ScrollView>
+            ) : (
+              <Text style={styles.noItemsText}>No items added yet.</Text>
+            )}
+          </View>
+        </View>
+      </Modal>
       {/* Favorites Modal */}
       <Modal
         visible={isModalVisible.favorites}
@@ -223,8 +262,40 @@ const Home = () => {
           <View style={styles.modalText}></View>
         </View>
       </Modal>
+      {/* Instruction Modal */}
+      <Modal
+        visible={isModalVisible.instructions}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => toggleModal('instructions')}>
+        <View style={styles.modalContainer}>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => toggleModal('instructions')}>
+            <Image source={require('../assets/cross.png')} style={styles.closeIcon} />
+          </TouchableOpacity>
 
-      {/* Profile Modal */}
+          {/* Display recipe image and formatted instructions */}
+          {selectedRecipe && (
+            <View style={[styles.modalText, styles.centeredContent]}>
+              <Image
+                source={{ uri: selectedRecipe.image }}
+                style={styles.modalImage}
+              />
+
+              {/* Scrollable instructions */}
+              <ScrollView style={styles.scrollViewInstructions}>
+                {formatInstructions(selectedRecipe.instructions).map((instruction, index) => (
+                  <Text key={index} style={styles.recipeInstructions}>
+                    {instruction}
+                  </Text>
+                ))}
+              </ScrollView>
+            </View>
+          )}
+        </View>
+      </Modal>
+            {/* Profile Modal */}
       <Modal
         visible={isModalVisible.profile}
         transparent={true}
@@ -236,7 +307,15 @@ const Home = () => {
             onPress={() => toggleModal('profile')}>
             <Image source={require('../assets/cross.png')} style={styles.closeIcon} />
           </TouchableOpacity>
-          <View style={styles.modalText}></View>
+          <View style={styles.modalText}>
+            <Text style={styles.profileText1}>Email</Text>
+            <Text style={styles.profileText2}>{user?.email}</Text>
+            <Text style={styles.profileText3}>Password:</Text> {/* Display password */}
+            <Text style={styles.profileText4}>{user?.password}</Text> {/* Display password */}
+            <TouchableOpacity onPress={handleLogout}>
+            <Text style={styles.logoutText}>Log Out</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
     </View>
