@@ -1,24 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, Image, TextInput, TouchableOpacity, Modal, ScrollView, Alert } from 'react-native';
 import axios from 'axios';
-import { createClient } from '@supabase/supabase-js'; // For Supabase integration
 import { useNavigation } from '@react-navigation/native'; // Import navigation hook
 import styles from '../styles/homestyles'; // Ensure the import path is correct
 
-const API_KEY = 'b406e7cf7e264868879a8fc03e4f2b5d'; // Your API Key
-
-// Supabase initialization
-const supabaseUrl = 'https://swvrzgrpqspparlibyug.supabase.co';
-const supabaseAnonKey =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3dnJ6Z3JwcXNwcGFybGlieXVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA0MzMyOTEsImV4cCI6MjA0NjAwOTI5MX0.CwYqmcQ5f2JT5A8THcsLwoTHA0S0w4joeeFApyscqOg';
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const API_KEY = 'b0ee7bf0482145e6bed907a043a3a487'; // Your API Key
 
 const Home = () => {
   const [isModalVisible, setModalVisible] = useState({
     items: false,
     favorites: false,
-    profile: false,
     instructions: false, // Add state for instruction modal
   });
 
@@ -26,27 +17,6 @@ const Home = () => {
   const [currentItem, setCurrentItem] = useState(''); // Current input in search bar
   const [recipes, setRecipes] = useState([]); // Recipes fetched from API
   const [selectedRecipe, setSelectedRecipe] = useState(null); // Store the selected recipe
-  const [user, setUser] = useState(null); // To store user info
-
-  const navigation = useNavigation(); // Use navigation hook
-
-  // Fetch user profile data from Supabase
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const { data, error } = await supabase.from('users').select('email, password').single();
-        if (error) {
-          console.error('Error fetching user data:', error);
-        } else {
-          setUser(data); // Set the user data in state
-        }
-      } catch (error) {
-        console.error('Error fetching user profile:', error);
-      }
-    };
-    
-    fetchUserProfile(); // Fetch user profile data on component mount
-  }, []);
 
   // Function to toggle the visibility of modals
   const toggleModal = (key) => {
@@ -139,17 +109,6 @@ const Home = () => {
     return formattedInstructions.split('\n'); // Split by newline to render each item as a Text component
   };
 
-  // Function to log out and redirect to login screen
-  const handleLogout = async () => {
-    try {
-      await supabase.auth.signOut(); // Sign out the user
-      setModalVisible({ ...isModalVisible, profile: false }); // Close the profile modal
-      navigation.navigate('Login'); // Navigate to the login screen
-    } catch (error) {
-      console.error('Error logging out:', error);
-    }
-  };
-
   return (
     <View style={styles.container}>
       {/* Search Area */}
@@ -211,9 +170,6 @@ const Home = () => {
         <TouchableOpacity onPress={() => toggleModal('favorites')}>
           <Text style={styles.text}>FAVORITES</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => toggleModal('profile')}>
-          <Text style={styles.text}>PROFILE</Text>
-        </TouchableOpacity>
       </View>
 
       {/* Modals */}
@@ -247,21 +203,6 @@ const Home = () => {
           </View>
         </View>
       </Modal>
-      {/* Favorites Modal */}
-      <Modal
-        visible={isModalVisible.favorites}
-        transparent={true}
-        animationType="fade"
-        onRequestClose={() => toggleModal('favorites')}>
-        <View style={styles.modalContainer}>
-          <TouchableOpacity
-            style={styles.closeButton}
-            onPress={() => toggleModal('favorites')}>
-            <Image source={require('../assets/cross.png')} style={styles.closeIcon} />
-          </TouchableOpacity>
-          <View style={styles.modalText}></View>
-        </View>
-      </Modal>
       {/* Instruction Modal */}
       <Modal
         visible={isModalVisible.instructions}
@@ -293,29 +234,6 @@ const Home = () => {
               </ScrollView>
             </View>
           )}
-        </View>
-      </Modal>
-            {/* Profile Modal */}
-      <Modal
-        visible={isModalVisible.profile}
-        transparent={true}
-        animationType="fade"
-        onRequestClose={() => toggleModal('profile')}>
-        <View style={styles.modalContainer}>
-          <TouchableOpacity
-            style={styles.closeButton}
-            onPress={() => toggleModal('profile')}>
-            <Image source={require('../assets/cross.png')} style={styles.closeIcon} />
-          </TouchableOpacity>
-          <View style={styles.modalText}>
-            <Text style={styles.profileText1}>Email</Text>
-            <Text style={styles.profileText2}>{user?.email}</Text>
-            <Text style={styles.profileText3}>Password:</Text> {/* Display password */}
-            <Text style={styles.profileText4}>{user?.password}</Text> {/* Display password */}
-            <TouchableOpacity onPress={handleLogout}>
-            <Text style={styles.logoutText}>Log Out</Text>
-            </TouchableOpacity>
-          </View>
         </View>
       </Modal>
     </View>
